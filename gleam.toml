@@ -9,7 +9,7 @@ licences = ["Apache-2.0"]
 repository = { type = "github", user = "vtomilin", repo = "gulid" }
 # links = [{ title = "Website", href = "" }]
 internal_modules = [
-"gleam_ulid/examples/*",
+"gulid/examples/*",
 ]
 
 [dependencies]
