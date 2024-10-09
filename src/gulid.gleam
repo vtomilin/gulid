@@ -1,3 +1,23 @@
+//// ## ULID Implementation in Gleam
+////
+//// ### Create
+//// - `new()`: Non-monotonic.
+//// - `new_monotonic(Ulid)`: Monotonic using previous `Ulid` value
+//// - Parse ULID from a string:
+//// ```gleam
+//// let from_string = from_string_function()
+//// from_string(new()) |> io.debug
+//// ```
+//// - `from_parts(Int, Int)`: Create from a timestamp milliseconds from Epoch
+////                           and random.
+////
+//// ### Convert to `String`
+//// ```gleam
+////    let to_string = to_string_function()
+////    let ulid = new()
+////    io.println("Ulid: " <> to_string(ulid))
+//// ```
+
 import gleam/bit_array
 import gleam/crypto
 import gleam/dict
@@ -8,31 +28,17 @@ import gleam/order
 import gleam/result
 import gleam/string
 
-/// Represents an opaque `Ulid` type.
-///
-/// ## Create
-/// - `new()`: Non-monotonic.
-/// - `new_monotonic(Ulid)`: Monotonic using previous.
-/// - `from_string(String)`: Parse ULID from a string.
-/// - `from_parts(Int, Int)`: Create from a timestamp milliseconds from Epoch
-///                           and random.
-///
-/// ## Convert to `String`
-/// ```gleam
-///    let to_string = to_string_function()
-///    let ulid = new()
-///    io.println("Ulid: " <> to_string(ulid))
-/// ```
+/// Opaque `Ulid` type.
 pub opaque type Ulid {
   /// Create `Ulid` value from a raw `BitArray`
   Ulid(BitArray)
 }
 
-/// Ulid module errors
+/// Ulid module errors to be returned in a `Result`
 pub type UlidError {
-  /// Returned when failed to decode
+  /// Returned when failed to decode `Ulid` from a `String`
   DecodeError(mesage: String)
-  /// Returned when input is of incorrect length
+  /// Returned when input string is of incorrect length
   InvalidLength(message: String)
 }
 
@@ -67,14 +73,14 @@ pub fn to_string_function() -> fn(Ulid) -> String {
 pub fn new() -> Ulid {
   let time = erlang.system_time(erlang.Millisecond)
   let randomness = crypto.strong_random_bytes(10)
-
   Ulid(<<time:big-48, randomness:bits>>)
 }
 
-/// Returns new `Ulid` value based on given previous according to behavior,
-/// described on ULID spec, basically, if previous has the same timestamp then
-/// increment least significant bit of its random by 1 with carry to produce a
-/// new `Ulid` (with the same timestamp).
+/// Returns a new `Ulid` value based on given previous one according to the 
+/// behavior, described in the ULID spec, but basically, if the previous `Ulid`
+/// has the same timestamp then increment the least significant bit of its 
+/// random value by 1 (with carry) to produce a new `Ulid` (with the same 
+/// timestamp).
 pub fn new_monotonic(prev_ulid: Ulid) -> Ulid {
   let time = erlang.system_time(erlang.Millisecond)
   let assert Ulid(<<prev_time:unsigned-48, random:unsigned-80>>) = prev_ulid
@@ -84,8 +90,8 @@ pub fn new_monotonic(prev_ulid: Ulid) -> Ulid {
   }
 }
 
-/// Returns a non-monotonic ULID value as string. Note, this is a shortcut, 
-/// not very good as far as the performance.
+/// Returns a non-monotonic ULID value as a string. Note, this is a shortcut, 
+/// not very good for performance.
 pub fn new_as_string() -> String {
   new() |> to_string_function()
 }
@@ -216,23 +222,21 @@ pub fn from_string_function() -> fn(String) -> Result(Ulid, UlidError) {
   }
 }
 
-/// Returns an `Ulid` components `#(timestamp: Int, random: Int)` tuple.
+/// Returns `Ulid` components in a `#(timestamp, random)` tuple.
 pub fn to_parts(ulid: Ulid) -> #(Int, Int) {
-  // let assert <<timestamp:unsigned-48, random:unsigned-80>> =
-  // bit_array.append(ulid.timestamp, ulid.random)
   let assert Ulid(<<timestamp:unsigned-48, random:unsigned-80>>) = ulid
   #(timestamp, random)
 }
 
-/// Returns `Ulid` value, build from given integer timestamp (millis from Epoch)
-/// and random values
-pub fn from_parts(timestamp: Int, random: Int) -> Ulid {
+/// Returns a `Ulid` value, build from a given integer timestamp (millis from
+/// Epoch) and random values
+pub fn from_parts(timestamp timestamp: Int, random random: Int) -> Ulid {
   Ulid(<<timestamp:big-48, random:big-80>>)
 }
 
-/// Returns `Ulid` value, build from given (timestamp, random) tuple.
+/// Returns a `Ulid` value, built from a given `#(timestamp, random)` tuple.
 pub fn from_tuple(parts: #(Int, Int)) -> Ulid {
-  from_parts(parts.0, parts.1)
+  from_parts(timestamp: parts.0, random: parts.1)
 }
 
 //-- Private stuff

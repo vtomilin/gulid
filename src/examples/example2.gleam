@@ -5,15 +5,16 @@ import gleam/io
 import gleam/list
 import gleam/result
 import gleam/string
-import gulid.{from_parts, from_tuple, to_parts}
+import gulid.{from_parts, from_tuple, to_parts, to_string_function}
 
 pub fn main() {
+  let to_string = to_string_function()
   let ulid =
     from_parts(
       erlang.system_time(erlang.Millisecond),
       int.random(99_999_999_999),
     )
-  io.println("My ulid made from spare parts:")
+  io.println("My ulid made from spare parts: " <> to_string(ulid))
   io.debug(ulid)
 
   let #(timestamp, random) = to_parts(ulid)
@@ -22,16 +23,19 @@ pub fn main() {
     "\tTime: "
     <> { system_time_to_rfc3339(timestamp / 1000) |> from_codepoints },
   )
-  // io.debug(system_time_to_rfc3339(timestamp / 1000))
   io.println("\tRandom: " <> int.to_string(random))
 
   let same_ulid = from_tuple(#(timestamp, random))
+  io.println(
+    "Now, we reconstruct a new ULID back from the earlier extracted components: "
+    <> to_string(same_ulid),
+  )
 
   io.println("Same ulids? " <> { bool.to_string(same_ulid == ulid) })
 }
 
 @external(erlang, "calendar", "system_time_to_rfc3339")
-fn system_time_to_rfc3339(timestamp_millis_since_epoch: Int) -> List(Int)
+fn system_time_to_rfc3339(seconds_since_epoch: Int) -> List(Int)
 
 fn from_codepoints(code_points: List(Int)) -> String {
   code_points

@@ -2,6 +2,9 @@
 [Universally Unique Lexicographically Sortable Identifier](https://github.com/ulid/spec) implementation in
 Gleam.
 
+What's a ULID? Some say it's a better UUID. In a string form it is shorter (26
+characters vs. 32) and sortable.
+
 # Caveats
 1. Only Erlang build target is supported (at the moment)
 
@@ -16,14 +19,14 @@ gleam add gulid
 
 ```gleam
 import gulid.{ new_as_string, new, new_monotonic, from_string_function,
-                    to_string_function }
+               to_string_function }
 
 pub fn main() {
-  // Quick and dirty ULID string - has performance implications
+  // Quick and dirty ULID string - performance implications
   let ulid_str = new_as_string()
   io.println("ULID is " <> ulid_str)
 
-  // Conver many ULIDs to String with a generator function
+  // Convert many ULIDs to String with a generator function
   let to_string = to_string_function()
   // `to_string_function` returns a function that then can be used to
   // convert `Ulid` values to `String`. The reason this is done this way is
@@ -58,11 +61,11 @@ pub fn main() {
   // Monotonic ULIDs:
   // 1. Generate initial `Ulid` with `new()`
   // 2. Then use `new_monotonic(Ulid)` with initial and subsequently generated
-  list.range(0, 9)
+  list.range(0, 9) // We want 10 monotonic ULIDs
   |> list.scan(new(), fn(ulid, _) { new_monotonic(ulid) })
+  // Convert'em to strings
   |> list.map(to_string_function())
   |> io.debug
-
 }
 ```
 # Advanced Use
@@ -103,7 +106,7 @@ pub fn main() {
 }
 
 @external(erlang, "calendar", "system_time_to_rfc3339")
-fn system_time_to_rfc3339(timestamp_millis_since_epoch: Int) -> List(Int)
+fn system_time_to_rfc3339(seconds_since_epoch: Int) -> List(Int)
 
 fn from_codepoints(code_points: List(Int)) -> String {
   code_points
@@ -118,10 +121,16 @@ fn from_codepoints(code_points: List(Int)) -> String {
 
 Further documentation can be found at <https://hexdocs.pm/gulid>.
 
-## Development
+## Examples
 
 ```sh
 gleam run -m examples/example1   # Run the example one
 gleam run -m examples/example2   # Run the example two
+```
+
+## Development
+
+```sh
 gleam test  # Run the tests
 ```
+
