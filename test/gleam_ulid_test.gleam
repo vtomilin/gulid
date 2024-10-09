@@ -3,9 +3,12 @@ import gleam/int
 import gleam/list
 import gleam/order
 import gleam/string
+import gleam_ulid.{
+  type Ulid, from_parts, from_string_function, new, new_monotonic, to_parts,
+  to_string_function,
+}
 import gleeunit
 import gleeunit/should
-import ulid.{type Ulid, from_string_function, new, to_string_function}
 
 pub fn main() {
   gleeunit.main()
@@ -24,7 +27,7 @@ pub fn to_string_success_test() -> #(Ulid, String) {
 
 pub fn monotonic_test() {
   list.range(0, 9)
-  |> list.scan(new(), fn(ulid, _) { ulid.new_monotonic(ulid) })
+  |> list.scan(new(), fn(ulid, _) { new_monotonic(ulid) })
   |> list.map(to_string_function())
   |> list.window_by_2
   |> list.all(fn(ulid_pair) {
@@ -68,8 +71,8 @@ pub fn from_string_too_short_test() {
 pub fn from_parts_test() {
   let date_time = erlang.system_time(erlang.Millisecond)
   let random = int.random(162_554_647_477_263)
-  let ulid = ulid.from_parts(date_time, random)
-  let #(ts, rnd) = ulid.to_parts(ulid)
+  let ulid = from_parts(date_time, random)
+  let #(ts, rnd) = to_parts(ulid)
 
   ts |> should.equal(date_time)
   rnd |> should.equal(random)

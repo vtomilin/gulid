@@ -1,4 +1,4 @@
-# ULID
+# Gleam ULID
 [Universally Unique Lexicographically Sortable Identifier](https://github.com/ulid/spec) implementation in
 Gleam.
 
@@ -9,14 +9,14 @@ Gleam.
 [![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/ulid/)
 
 ```sh
-gleam add ulid
+gleam add gleam_ulid
 ```
 
 # Basic Use
 
 ```gleam
-import ulid.{ new_as_string, new, new_monotonic, from_string_function,
-              to_string_function }
+import gleam_ulid.{ new_as_string, new, new_monotonic, from_string_function,
+                    to_string_function }
 
 pub fn main() {
   // Quick and dirty ULID string - has performance implications
@@ -76,8 +76,8 @@ import gleam/io
 import gleam/list
 import gleam/result
 import gleam/string
-import gleeunit/should
-import ulid.{from_parts, from_tuple, to_parts}
+import gleam/bool
+import gleam_ulid.{from_parts, from_tuple, to_parts}
 
 pub fn main() {
   let ulid =
@@ -99,7 +99,7 @@ pub fn main() {
 
   let same_ulid = from_tuple(#(timestamp, random))
 
-  should.equal(ulid, same_ulid)
+  io.println("Same ulids? " <> { bool.to_string(same_ulid == ulid) })
 }
 
 @external(erlang, "calendar", "system_time_to_rfc3339")
@@ -121,7 +121,7 @@ Further documentation can be found at <https://hexdocs.pm/ulid>.
 ## Development
 
 ```sh
-gleam run -m example1   # Run the example one
-gleam run -m example2   # Run the example two
+gleam run -m examples/example1   # Run the example one
+gleam run -m examples/example2   # Run the example two
 gleam test  # Run the tests
 ```
