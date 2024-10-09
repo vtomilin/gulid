@@ -1,4 +1,4 @@
-name = "gleam_ulid"
+name = "gulid"
 version = "0.0.1"
 
 # Fill out these fields if you intend to generate HTML documentation or publish
@@ -6,7 +6,7 @@ version = "0.0.1"
 #
 description = "ULID implementation in Gleam (Erlang target only)"
 licences = ["Apache-2.0"]
-repository = { type = "github", user = "vtomilin", repo = "gleam_ulid" }
+repository = { type = "github", user = "vtomilin", repo = "gulid" }
 # links = [{ title = "Website", href = "" }]
 internal_modules = [
 "gleam_ulid/examples/*",

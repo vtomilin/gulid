@@ -5,7 +5,7 @@ import gleam/io
 import gleam/list
 import gleam/result
 import gleam/string
-import gleam_ulid.{from_parts, from_tuple, to_parts}
+import gulid.{from_parts, from_tuple, to_parts}
 
 pub fn main() {
   let ulid =
