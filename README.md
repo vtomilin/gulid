@@ -3,10 +3,7 @@
 Gleam.
 
 # Caveats
-1. Only Erlang build target is supported
-2. Monotonic ULID generation assumes keeping prior state(timestamp), which is 
-somewhat awkward in Gleam as one needs to resort to using actors, which this 
-implementation does not. Therefore, it is not fully compliant.
+1. Only Erlang build target is supported (at the moment)
 
 [![Package Version](https://img.shields.io/hexpm/v/ulid)](https://hex.pm/packages/ulid)
 [![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/ulid/)
@@ -32,10 +29,10 @@ pub fn main() {
   // convert `Ulid` values to `String`. The reason this is done this way is
   // that Gleam doesn't have a way to define module scoped global constants
   // that could use function calls to initialize. Nor does it have module scoped
-  // `let`. Therefore, the only way to have a `private` reused value is to 
+  // `let`. Therefore, the only way to have a `private` reused value is to
   // have it as a capture. So, there is a `let` in `to_string_function`, which
   // binds an Erlang array with ULID character encodings, captured in returned
-  // function. 
+  // function.
   let bunch_of_ulids = list.map([new(), new(), new(), new(), new()], to_string)
   io.println("A bunch of ULIDs:")
   io.debug(bunch_of_ulids)
@@ -65,7 +62,7 @@ pub fn main() {
   |> list.scan(new(), fn(ulid, _) { new_monotonic(ulid) })
   |> list.map(to_string_function())
   |> io.debug
-  
+
 }
 ```
 # Advanced Use
