@@ -122,5 +122,6 @@ Further documentation can be found at <https://hexdocs.pm/ulid>.
 
 ```sh
 gleam run -m example1   # Run the example one
+gleam run -m example2   # Run the example two
 gleam test  # Run the tests
 ```
