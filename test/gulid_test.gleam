@@ -3,12 +3,12 @@ import gleam/int
 import gleam/list
 import gleam/order
 import gleam/string
-import gleam_ulid.{
+import gleeunit
+import gleeunit/should
+import gulid.{
   type Ulid, from_parts, from_string_function, new, new_monotonic, to_parts,
   to_string_function,
 }
-import gleeunit
-import gleeunit/should
 
 pub fn main() {
   gleeunit.main()

@@ -9,13 +9,13 @@ Gleam.
 [![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/ulid/)
 
 ```sh
-gleam add gleam_ulid
+gleam add gulid
 ```
 
 # Basic Use
 
 ```gleam
-import gleam_ulid.{ new_as_string, new, new_monotonic, from_string_function,
+import gulid.{ new_as_string, new, new_monotonic, from_string_function,
                     to_string_function }
 
 pub fn main() {
@@ -77,7 +77,7 @@ import gleam/list
 import gleam/result
 import gleam/string
 import gleam/bool
-import gleam_ulid.{from_parts, from_tuple, to_parts}
+import gulid.{from_parts, from_tuple, to_parts}
 
 pub fn main() {
   let ulid =

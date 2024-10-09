@@ -1,6 +1,6 @@
 import gleam/io
 import gleam/list
-import gleam_ulid.{
+import gulid.{
   DecodeError, InvalidLength, from_string_function, new, new_as_string,
   to_string_function,
 }
