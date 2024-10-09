@@ -5,8 +5,8 @@ Gleam.
 # Caveats
 1. Only Erlang build target is supported (at the moment)
 
-[![Package Version](https://img.shields.io/hexpm/v/ulid)](https://hex.pm/packages/ulid)
-[![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/ulid/)
+[![Package Version](https://img.shields.io/hexpm/v/gulid)](https://hex.pm/packages/gulid)
+[![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/gulid/)
 
 ```sh
 gleam add gulid
