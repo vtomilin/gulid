@@ -6,7 +6,7 @@ version = "0.0.1"
 #
 description = "ULID implementation in Gleam (Erlang target only)"
 licences = ["Apache-2.0"]
-# repository = { type = "github", user = "", repo = "" }
+repository = { type = "github", user = "vtomilin", repo = "ulid" }
 # links = [{ title = "Website", href = "" }]
 
 [dependencies]
