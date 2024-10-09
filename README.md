@@ -116,7 +116,7 @@ fn from_codepoints(code_points: List(Int)) -> String {
 }
 ```
 
-Further documentation can be found at <https://hexdocs.pm/ulid>.
+Further documentation can be found at <https://hexdocs.pm/gulid>.
 
 ## Development
 
