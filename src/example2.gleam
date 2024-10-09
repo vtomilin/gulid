@@ -1,10 +1,10 @@
+import gleam/bool
 import gleam/erlang
 import gleam/int
 import gleam/io
 import gleam/list
 import gleam/result
 import gleam/string
-import gleeunit/should
 import ulid.{from_parts, from_tuple, to_parts}
 
 pub fn main() {
@@ -27,7 +27,7 @@ pub fn main() {
 
   let same_ulid = from_tuple(#(timestamp, random))
 
-  should.equal(ulid, same_ulid)
+  io.println("Same ulids? " <> { bool.to_string(same_ulid == ulid) })
 }
 
 @external(erlang, "calendar", "system_time_to_rfc3339")
