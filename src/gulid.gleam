@@ -62,7 +62,7 @@ pub fn to_string_function() -> fn(Ulid) -> String {
     // to string
     let assert Ok(ulid_str) =
       ulid
-      |> to_bitarray
+      |> to_bitarray_130bits
       |> encode_to_string_with_accumulator("", base32_array)
 
     ulid_str
@@ -97,7 +97,7 @@ pub fn new_as_string() -> String {
 }
 
 /// Builds a `Ulid` value from given `BitArray`. Returns `Ok` with `Ulid` value
-/// on success or `UlidError` otherwise.
+/// on success or `Error(UlidError)` otherwise.
 pub fn from_bitarray(array: BitArray) -> Result(Ulid, UlidError) {
   case array {
     <<ulid:bits-128>> -> Ok(Ulid(ulid))
@@ -239,6 +239,12 @@ pub fn from_tuple(parts: #(Int, Int)) -> Ulid {
   from_parts(timestamp: parts.0, random: parts.1)
 }
 
+/// Returns a binary representation of given `Ulid` value
+pub fn to_bitarray(ulid: Ulid) -> BitArray {
+  let Ulid(result) = ulid
+  <<result:bits>>
+}
+
 //-- Private stuff
 
 // Crockford base32 encoding characters
@@ -276,8 +282,7 @@ fn encode_to_string_with_accumulator(
   }
 }
 
-/// Returns a binary representation of givem `Ulid` value
-fn to_bitarray(ulid: Ulid) -> BitArray {
-  let Ulid(result) = ulid
-  <<0:2, result:bits>>
+/// Returns a binary representation of given `Ulid` value, expanded to 130 bits
+fn to_bitarray_130bits(ulid: Ulid) -> BitArray {
+  <<0:2, to_bitarray(ulid):bits>>
 }

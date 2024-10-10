@@ -77,3 +77,19 @@ pub fn from_parts_test() {
   ts |> should.equal(date_time)
   rnd |> should.equal(random)
 }
+
+pub fn from_bitarray_success_test() {
+  <<int.random(99_999_999):big-128>>
+  |> gulid.from_bitarray
+  |> should.be_ok
+}
+
+pub fn from_bitarray_fail_test() {
+  <<int.random(99_999_999):big-130>>
+  |> gulid.from_bitarray
+  |> should.be_error
+}
+
+pub fn to_bitarray_test() {
+  let assert <<_:unsigned-128>> = gulid.to_bitarray(new())
+}

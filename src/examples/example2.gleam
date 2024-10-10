@@ -5,7 +5,9 @@ import gleam/io
 import gleam/list
 import gleam/result
 import gleam/string
-import gulid.{from_parts, from_tuple, to_parts, to_string_function}
+import gulid.{
+  from_bitarray, from_parts, from_tuple, to_parts, to_string_function,
+}
 
 pub fn main() {
   let to_string = to_string_function()
@@ -32,6 +34,22 @@ pub fn main() {
   )
 
   io.println("Same ulids? " <> { bool.to_string(same_ulid == ulid) })
+
+  // Ulid from a binary
+  let assert Ok(bin_ulid) =
+    <<
+      erlang.system_time(erlang.Millisecond):big-48,
+      int.random(9_999_999_999):big-80,
+    >>
+    |> from_bitarray
+  io.println("Ulid from a bitarray: ")
+  io.debug(bin_ulid)
+
+  // Ulid to a bitarray
+  io.println("Ulid to binary: ")
+  bin_ulid
+  |> gulid.to_bitarray
+  |> io.debug
 }
 
 @external(erlang, "calendar", "system_time_to_rfc3339")
