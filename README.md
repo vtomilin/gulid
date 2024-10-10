@@ -69,8 +69,9 @@ pub fn main() {
 }
 ```
 # Advanced Use
-In case one needs to create ULIDs out of predefined constituents
-(timestamp and random), or extract them:
+In case one needs to create or outpur ULIDs out of
+- predefined constituents (timestamp and random)
+- binary representation
 
 ```gleam
 import gleam/erlang
@@ -80,7 +81,7 @@ import gleam/list
 import gleam/result
 import gleam/string
 import gleam/bool
-import gulid.{from_parts, from_tuple, to_parts}
+import gulid.{from_parts, from_tuple, to_parts, from_bitarray, to_bitarray}
 
 pub fn main() {
   let ulid =
@@ -103,6 +104,22 @@ pub fn main() {
   let same_ulid = from_tuple(#(timestamp, random))
 
   io.println("Same ulids? " <> { bool.to_string(same_ulid == ulid) })
+
+  // Ulid from a binary
+  let assert Ok(bin_ulid) =
+    <<
+      erlang.system_time(erlang.Millisecond):big-48,
+      int.random(9_999_999_999):big-80,
+    >>
+    |> from_bitarray
+  io.println("Ulid from a bitarray: ")
+  io.debug(bin_ulid)
+
+  // Ulid to a bitarray
+  io.println("Ulid to binary: ")
+  bin_ulid
+  |> to_bitarray
+  |> io.debug
 }
 
 @external(erlang, "calendar", "system_time_to_rfc3339")
