@@ -1,5 +1,5 @@
 name = "gulid"
-version = "0.0.3"
+version = "0.0.4"
 
 description = "ULID implementation in Gleam (Erlang target only)"
 licences = ["Apache-2.0"]
