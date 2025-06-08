@@ -15,11 +15,11 @@ pub fn main() {
   // `to_string_function` returns a function that then can be used to
   // convert `Ulid` values to `String`. The reason this is done this way is
   // that Gleam doesn't have a way to define module scoped global constants
-  // that could allow function calls to initialize. Nor does it allow module 
+  // that could allow function calls to initialize. Nor does it allow module
   // scoped `let`. Therefore, the only way to have a `private` reused immutable
-  // value is to have it as a capture in a lamdba function. So, there is a 
-  // `let` in `to_string_function`, which binds an Erlang array with ULID 
-  // character encodings, captured in the returned function. 
+  // value is to have it as a capture in a lamdba function. So, there is a
+  // `let` in `to_string_function`, which binds an Erlang array with ULID
+  // character encodings, captured in the returned function.
   let bunch_of_ulids = list.map([new(), new(), new(), new(), new()], to_string)
   io.println("A bunch of ULIDs:")
   echo bunch_of_ulids
