@@ -4,9 +4,9 @@ version = "0.0.7"
 description = "ULID implementation in Gleam (Erlang target only)"
 licences = ["Apache-2.0"]
 repository = { type = "github", user = "vtomilin", repo = "gulid" }
-internal_modules = [
-"examples/*",
-]
+# internal_modules = [
+# "examples/*",
+# ]
 
 [dependencies]
 gleam_stdlib = ">= 0.34.0 and < 2.0.0"
