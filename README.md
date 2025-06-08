@@ -140,9 +140,11 @@ Further documentation can be found at <https://hexdocs.pm/gulid>.
 
 ## Examples
 
+Change directory to `examples` then:
+
 ```sh
-gleam run -m examples/example1   # Run the example one
-gleam run -m examples/example2   # Run the example two
+gleam run -m example1   # Run the example one
+gleam run -m example2   # Run the example two
 ```
 
 ## Development
