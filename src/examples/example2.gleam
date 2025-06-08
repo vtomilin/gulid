@@ -17,7 +17,7 @@ pub fn main() {
       int.random(99_999_999_999),
     )
   io.println("My ulid made from spare parts: " <> to_string(ulid))
-  io.debug(ulid)
+  echo ulid
 
   let #(timestamp, random) = to_parts(ulid)
   io.println("Now, extracted its constituent timestamp and random:")
@@ -43,13 +43,13 @@ pub fn main() {
     >>
     |> from_bitarray
   io.println("Ulid from a bitarray: ")
-  io.debug(bin_ulid)
+  echo bin_ulid
 
   // Ulid to a bitarray
   io.println("Ulid to binary: ")
   bin_ulid
   |> gulid.to_bitarray
-  |> io.debug
+  |> echo
 }
 
 @external(erlang, "calendar", "system_time_to_rfc3339")

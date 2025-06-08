@@ -6,7 +6,7 @@
 //// - Parse ULID from a string:
 //// ```gleam
 //// let from_string = from_string_function()
-//// from_string(new()) |> io.debug
+//// from_string(new()) |> echo
 //// ```
 //// - `from_parts(Int, Int)`: Create from a timestamp milliseconds from Epoch
 ////                           and random.
@@ -49,7 +49,7 @@ pub type UlidError {
 /// ```gleam
 /// let to_string = to_string_function()
 /// let ulid = new()
-/// io.debug(to_string(ulid))
+/// echo to_string(ulid)
 /// ```
 pub fn to_string_function() -> fn(Ulid) -> String {
   let base32_array =
@@ -117,7 +117,7 @@ pub fn from_bitarray(array: BitArray) -> Result(Ulid, UlidError) {
 /// let from_string = from_string_function()
 /// let ulid_str = "01J9P2J2B0S4T4DFJAJ6RTV1DE"
 /// let ulid = from_string(ulid_str)
-/// io.debug(ulid)
+/// echo ulid
 /// ```
 pub fn from_string_function() -> fn(String) -> Result(Ulid, UlidError) {
   let base32_decode =
@@ -210,14 +210,14 @@ pub fn from_string_function() -> fn(String) -> Result(Ulid, UlidError) {
         }
       },
     )
-    // |> io.debug
+    // |> echo
     |> result.map(fn(ulid_bits) {
       case ulid_bits {
         <<_:2, trim:bits-128>> -> trim
         _ -> ulid_bits
       }
     })
-    // |> io.debug
+    // |> echo
     |> result.try(from_bitarray)
   }
 }

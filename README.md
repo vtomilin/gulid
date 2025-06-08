@@ -38,20 +38,20 @@ pub fn main() {
   // function.
   let bunch_of_ulids = list.map([new(), new(), new(), new(), new()], to_string)
   io.println("A bunch of ULIDs:")
-  io.debug(bunch_of_ulids)
+  echo bunch_of_ulids
 
   // Parse ULIDs from string
   let from_string = from_string_function()
   // Quick and dirty
   let assert Ok(ulid) = from_string("01J9HSAQG7YR6Z16SS7ZTH26WQ")
   io.println("Quick and dirty parsed ULID is")
-  io.debug(ulid)
+  echo ulid
 
   // More proper
   io.println("A more properly parsed ULID is")
   case from_string("01J9HS6WA9ZBA045WTNYWAGPM5") {
     Ok(ulid) -> {
-      io.debug(ulid)
+      echo ulid
       Nil
     }
     Error(InvalidLength(error)) | Error(DecodeError(error)) ->
@@ -65,7 +65,7 @@ pub fn main() {
   |> list.scan(new(), fn(ulid, _) { new_monotonic(ulid) })
   // Convert'em to strings
   |> list.map(to_string_function())
-  |> io.debug
+  |> echo
 }
 ```
 # Advanced Use
@@ -90,7 +90,7 @@ pub fn main() {
       int.random(99_999_999_999),
     )
   io.println("My ulid made from spare parts:")
-  io.debug(ulid)
+  echo ulid
 
   let #(timestamp, random) = to_parts(ulid)
   io.println("Now, extracted its constituent timestamp and random:")
@@ -98,7 +98,7 @@ pub fn main() {
     "\tTime: "
     <> { system_time_to_rfc3339(timestamp / 1000) |> from_codepoints },
   )
-  // io.debug(system_time_to_rfc3339(timestamp / 1000))
+  // echo system_time_to_rfc3339(timestamp / 1000)
   io.println("\tRandom: " <> int.to_string(random))
 
   let same_ulid = from_tuple(#(timestamp, random))
@@ -113,13 +113,13 @@ pub fn main() {
     >>
     |> from_bitarray
   io.println("Ulid from a bitarray: ")
-  io.debug(bin_ulid)
+  echo bin_ulid
 
   // Ulid to a bitarray
   io.println("Ulid to binary: ")
   bin_ulid
   |> to_bitarray
-  |> io.debug
+  |> echo
 }
 
 @external(erlang, "calendar", "system_time_to_rfc3339")

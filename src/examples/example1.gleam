@@ -22,20 +22,20 @@ pub fn main() {
   // character encodings, captured in the returned function. 
   let bunch_of_ulids = list.map([new(), new(), new(), new(), new()], to_string)
   io.println("A bunch of ULIDs:")
-  io.debug(bunch_of_ulids)
+  echo bunch_of_ulids
 
   // Parse ULIDs from string
   let from_string = from_string_function()
   // Quick and dirty
   let assert Ok(ulid) = from_string("01J9HSAQG7YR6Z16SS7ZTH26WQ")
   io.println("Quick and dirty ULID is")
-  io.debug(ulid)
+  echo ulid
 
   // More proper
   io.println("A more properly parsed ULID is")
   case from_string("01J9HS6WA9ZBA045WTNYWAGPM5") {
     Ok(ulid) -> {
-      io.debug(ulid)
+      echo ulid
       Nil
     }
     Error(InvalidLength(error)) | Error(DecodeError(error)) ->
@@ -51,5 +51,5 @@ pub fn main() {
   |> list.scan(new(), fn(ulid, _) { new_monotonic(ulid) })
   // Convert'em to strings
   |> list.map(to_string_function())
-  |> io.debug
+  |> echo
 }
