@@ -74,7 +74,6 @@ In case one needs to create or outpur ULIDs out of
 - binary representation
 
 ```gleam
-import gleam/erlang
 import gleam/int
 import gleam/io
 import gleam/list
@@ -86,7 +85,7 @@ import gulid.{from_parts, from_tuple, to_parts, from_bitarray, to_bitarray}
 pub fn main() {
   let ulid =
     from_parts(
-      erlang.system_time(erlang.Millisecond),
+      gulid.erl_system_time_millis(),
       int.random(99_999_999_999),
     )
   io.println("My ulid made from spare parts:")
@@ -108,7 +107,7 @@ pub fn main() {
   // Ulid from a binary
   let assert Ok(bin_ulid) =
     <<
-      erlang.system_time(erlang.Millisecond):big-48,
+      gulid.erl_system_time_millis():big-48,
       int.random(9_999_999_999):big-80,
     >>
     |> from_bitarray
@@ -152,4 +151,3 @@ gleam run -m example2   # Run the example two
 ```sh
 gleam test  # Run the tests
 ```
-

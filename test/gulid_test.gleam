@@ -1,4 +1,3 @@
-import gleam/erlang
 import gleam/int
 import gleam/list
 import gleam/order
@@ -69,7 +68,7 @@ pub fn from_string_too_short_test() {
 }
 
 pub fn from_parts_test() {
-  let date_time = erlang.system_time(erlang.Millisecond)
+  let date_time = gulid.erl_system_time_millis()
   let random = int.random(162_554_647_477_263)
   let ulid = from_parts(date_time, random)
   let #(ts, rnd) = to_parts(ulid)

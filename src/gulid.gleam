@@ -21,7 +21,6 @@
 import gleam/bit_array
 import gleam/crypto
 import gleam/dict
-import gleam/erlang
 import gleam/int
 import gleam/list
 import gleam/order
@@ -71,7 +70,7 @@ pub fn to_string_function() -> fn(Ulid) -> String {
 
 /// Returns a new `Ulid` created from current system time and strong random.
 pub fn new() -> Ulid {
-  let time = erlang.system_time(erlang.Millisecond)
+  let time = erl_system_time_millis()
   let randomness = crypto.strong_random_bytes(10)
   Ulid(<<time:big-48, randomness:bits>>)
 }
@@ -82,7 +81,7 @@ pub fn new() -> Ulid {
 /// random value by 1 (with carry) to produce a new `Ulid` (with the same 
 /// timestamp).
 pub fn new_monotonic(prev_ulid: Ulid) -> Ulid {
-  let time = erlang.system_time(erlang.Millisecond)
+  let time = erl_system_time_millis()
   let assert Ulid(<<prev_time:unsigned-48, random:unsigned-80>>) = prev_ulid
   case int.compare(time, prev_time) {
     order.Eq | order.Lt -> Ulid(<<prev_time:big-48, { random + 1 }:big-80>>)
@@ -286,3 +285,22 @@ fn encode_to_string_with_accumulator(
 fn to_bitarray_130bits(ulid: Ulid) -> BitArray {
   <<0:2, to_bitarray(ulid):bits>>
 }
+
+// Private type to match Erlang's `time_unit()` atom
+type TimeUnit {
+  // Second
+  Millisecond
+  // Microsecond
+  // Nanosecond
+}
+
+/// Returns system time in milliseconds
+/// Like Erlang's `erlang:system_time(millisecond)`
+pub fn erl_system_time_millis() -> Int {
+  // erl_system_time(dynamic.int(1000))
+  erl_system_time(Millisecond)
+}
+
+// fn erl_system_time(unit: dynamic.Dynamic) -> Int
+@external(erlang, "erlang", "system_time")
+fn erl_system_time(unit: TimeUnit) -> Int
