@@ -25,8 +25,11 @@ pub fn to_string_success_test() -> #(Ulid, String) {
 }
 
 pub fn monotonic_test() {
-  list.range(0, 9)
-  |> list.scan(new(), fn(ulid, _) { new_monotonic(ulid) })
+  int.range(from: 1, to: 9, with: [new()], run: fn(acc, _) {
+    let assert Ok(last) = list.last(acc)
+    let init = list.take(acc, 1)
+    list.append(init, [new_monotonic(last)])
+  })
   |> list.map(to_string_function())
   |> list.window_by_2
   |> list.all(fn(ulid_pair) {
