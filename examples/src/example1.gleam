@@ -1,3 +1,4 @@
+import gleam/int
 import gleam/io
 import gleam/list
 import gulid.{
@@ -46,7 +47,11 @@ pub fn main() {
   io.println("Generating 10 monotonic ULIDs")
   // 1. Generate initial `Ulid` with `new()`
   // 2. Then use `new_monotonic(Ulid)` with initial and subsequently generated
-  list.range(0, 9)
+  int.range(from: 1, to: 9, with: [new()], run: fn(acc, _) {
+    let assert Ok(last) = list.last(acc)
+    let init = list.take(acc, 1)
+    list.append(init, [new_monotonic(last)])
+  })
   // We want 10 monotonic ULIDs
   |> list.scan(new(), fn(ulid, _) { new_monotonic(ulid) })
   // Convert'em to strings
