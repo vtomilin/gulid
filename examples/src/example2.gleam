@@ -1,5 +1,4 @@
 import gleam/bool
-import gleam/erlang
 import gleam/int
 import gleam/io
 import gleam/list
@@ -12,10 +11,7 @@ import gulid.{
 pub fn main() {
   let to_string = to_string_function()
   let ulid =
-    from_parts(
-      erlang.system_time(erlang.Millisecond),
-      int.random(99_999_999_999),
-    )
+    from_parts(gulid.erl_system_time_millis(), int.random(99_999_999_999))
   io.println("My ulid made from spare parts: " <> to_string(ulid))
   echo ulid
 
@@ -38,7 +34,7 @@ pub fn main() {
   // Ulid from a binary
   let assert Ok(bin_ulid) =
     <<
-      erlang.system_time(erlang.Millisecond):big-48,
+      gulid.erl_system_time_millis():big-48,
       int.random(9_999_999_999):big-80,
     >>
     |> from_bitarray

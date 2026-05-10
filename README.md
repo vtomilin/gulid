@@ -1,4 +1,5 @@
 # Gleam ULID
+
 [Universally Unique Lexicographically Sortable Identifier](https://github.com/ulid/spec) implementation in
 Gleam.
 
@@ -6,6 +7,7 @@ What's a ULID? Some say it's a better UUID. In a string form it is shorter (26
 characters vs. 32) and sortable.
 
 # Caveats
+
 1. Only Erlang build target is supported (at the moment)
 
 [![Package Version](https://img.shields.io/hexpm/v/gulid)](https://hex.pm/packages/gulid)
@@ -61,15 +63,20 @@ pub fn main() {
   // Monotonic ULIDs:
   // 1. Generate initial `Ulid` with `new()`
   // 2. Then use `new_monotonic(Ulid)` with initial and subsequently generated
-  list.range(0, 9) // We want 10 monotonic ULIDs
-  |> list.scan(new(), fn(ulid, _) { new_monotonic(ulid) })
+  int.range(from: 1, to: 9, with: [new()], run: fn(acc, _) {
+    let assert Ok(last) = list.last(acc)
+    let init = list.take(acc, 1)
+    list.append(init, [new_monotonic(last)])
+  })
   // Convert'em to strings
   |> list.map(to_string_function())
   |> echo
 }
 ```
+
 # Advanced Use
-In case one needs to create or outpur ULIDs out of
+
+In case one needs to create or output ULIDs out of
 - predefined constituents (timestamp and random)
 - binary representation
 
@@ -139,9 +146,8 @@ Further documentation can be found at <https://hexdocs.pm/gulid>.
 
 ## Examples
 
-Change directory to `examples` then:
-
 ```sh
+cd examples/
 gleam run -m example1   # Run the example one
 gleam run -m example2   # Run the example two
 ```
